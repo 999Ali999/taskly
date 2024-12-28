@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import {
+  Keyboard,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { ShoppingListItem } from "../components/ShoppingListItem";
 import { theme } from "../theme";
 
@@ -31,19 +37,25 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder="E.g. Coffee"
-        style={styles.textInput}
-        value={value}
-        onChangeText={setValue}
-        returnKeyType="done"
-        onSubmitEditing={handleSubmit}
-      />
-      {shoppingList.map((item) => (
-        <ShoppingListItem key={item.id} name={item.name} />
-      ))}
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainerStyle}
+        stickyHeaderIndices={[0]}
+      >
+        <TextInput
+          placeholder="Add item..."
+          style={styles.textInput}
+          value={value}
+          onChangeText={setValue}
+          returnKeyType="done"
+          onSubmitEditing={handleSubmit}
+        />
+        {shoppingList.map((item) => (
+          <ShoppingListItem key={item.id} name={item.name} />
+        ))}
+      </ScrollView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -51,7 +63,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 12,
+    paddingTop: 18,
+  },
+  contentContainerStyle: {
+    paddingTop: 18,
   },
   textInput: {
     borderColor: theme.colorLightGray,
@@ -61,5 +76,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     fontSize: 18,
     borderRadius: 50,
+    backgroundColor: theme.colorWhite,
   },
 });
